@@ -3,4 +3,8 @@ go 1.20
 use (
 	./broker-service
 	./front-end
+	./authentication-service
+	./logger-service
+	./mail-service
+	./listener-service
 )
