@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"logger-service/data"
-	"net/http"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -53,18 +51,22 @@ func main() {
 		Models: data.New(client),
 	}
 
+	//grpc
+
+	app.gRPCListen()
+
 	//go app.serve()
 
-	srv := &http.Server{
-		Addr: fmt.Sprintf(":%s",webPort),
-		Handler: app.routes(),
-	}
+	// srv := &http.Server{
+	// 	Addr: fmt.Sprintf(":%s",webPort),
+	// 	Handler: app.routes(),
+	// }
 
-	err =srv.ListenAndServe()
+	// err =srv.ListenAndServe()
 
-	if err!=nil{
-		log.Panic(err)
-	}
+	// if err!=nil{
+	// 	log.Panic(err)
+	// }
 
 }
 
