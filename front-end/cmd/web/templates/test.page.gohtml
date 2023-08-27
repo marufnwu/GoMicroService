@@ -90,7 +90,7 @@
                 header: header
             }
 
-            fetch('http:\/\/localhost:8080/handle', body)
+            fetch({{print .BrokerURL "/handle"}}, body)
                 .then(response => {
                     // Handle the response
                     
@@ -131,7 +131,7 @@
                 header: header
             }
 
-            fetch('http:\/\/localhost:8080/log-grpc', body)
+            fetch({{print .BrokerURL "/log-grpc"}}, body)
                 .then(response => {
                     // Handle the response
                     

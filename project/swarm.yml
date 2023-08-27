@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: marufnwu/nginx-go:1.0.6
+    ports:
+      - "80:80"
+      - "443:443"
+    deploy:
+      replicas: 1
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+    environment:
+      CERTBOT_EMAIL: dev00.maruf@gmail.com
+
+
+  # certbot:
+  #   image: certbot/certbot
+  #   volumes:
+  #     - ./data/certbot/conf:/etc/letsencrypt
+  #     - ./data/certbot/www:/var/www/certbot
+
+  front-end-service:
+    image: marufnwu/front-end:1.0.5
+    deploy:
+      replicas: 1
+    environment:
+      BROKER_URL: "localhost:8080"
+
+
+  broker-service:
+    image: marufnwu/broker-service:1.0.0
+    ports:
+      - "8080:80"
+    deploy:
+      replicas: 1
+
+
+  logger-service:
+    image: marufnwu/logger-service:1.0.0
+    deploy:
+      replicas: 1
+
+
+  authentication-service:
+    image: marufnwu/authentication-service:1.0.1
+    deploy:
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+
+  postgres:
+    image: 'postgres:14.0'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
+    deploy:
+      replicas: 1
+    ports:
+      - 5432:5432
+
+
+  mongo:
+    image: 'mongo:4.2.16-bionic'
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./db-data/mongo/:/data/db
+    deploy:
+      replicas: 1
+volumes:
+  db-data:
+  data:
+  letsencrypt:
