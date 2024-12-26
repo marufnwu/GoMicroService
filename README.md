@@ -1,0 +1,1 @@
+This project demonstrates a microservice implemented in Golang. The source code is available on Github. The project uses a RESTful API and a simple database to illustrate the principles of microservices.
